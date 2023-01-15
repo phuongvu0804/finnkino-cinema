@@ -7,12 +7,15 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   (config) => {
-    config.headers.TokenCybersoft = apiConfig.authToken;
+    config = {
+      ...config,
 
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      config.headers.Authorization = `Bearer ${user?.accessToken}`;
-    }
+      headers: {
+        TokenCyberSoft: apiConfig.TokenCyberSoft,
+
+        Authorization: "Bearer " + localStorage.getItem("user"),
+      },
+    };
 
     return config;
   },
