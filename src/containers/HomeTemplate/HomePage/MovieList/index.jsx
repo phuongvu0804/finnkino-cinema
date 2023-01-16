@@ -17,6 +17,7 @@ import Loader from "@/components/Loader";
 import "./style.scss";
 import { SET_MOVIE_TYPE_NOW, SET_MOVIE_TYPE_SOON } from "@/store/constants/movieList";
 import actGetMovieList from "@/store/actions/movieList";
+import { MOVIE_OPTIONS } from "../constants";
 
 function MovieList() {
   useEffect(() => {
@@ -38,24 +39,21 @@ function MovieList() {
     }
   };
 
+  const renderMovieOptions = () => {
+    return MOVIE_OPTIONS.map((item, index) => (
+      <Button
+        key={index}
+        variant="text"
+        className={movieType === "now" ? "home-list__btn active" : "home-list__btn"}
+        onClick={() => dispatch({ type: SET_MOVIE_TYPE_NOW })}
+      >
+        {item}
+      </Button>
+    ));
+  };
   return (
     <Box className="home__movie-list">
-      <Typography align="center" className="home-list__btn-list">
-        <Button
-          variant="text"
-          className={movieType === "now" ? "home-list__btn active" : "home-list__btn"}
-          onClick={() => dispatch({ type: SET_MOVIE_TYPE_NOW })}
-        >
-          Phim đang chiếu
-        </Button>
-        <Button
-          variant="text"
-          className={movieType === "soon" ? "home-list__btn active" : "home-list__btn"}
-          onClick={() => dispatch({ type: SET_MOVIE_TYPE_SOON })}
-        >
-          Phim sắp chiếu
-        </Button>
-      </Typography>
+      <div className="home-list__btn-list">{renderMovieOptions()}</div>
 
       <Box className="movie-list__carousel-wrapper">
         <Container maxWidth="lg" sx={{ mx: "auto" }}>

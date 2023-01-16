@@ -28,38 +28,12 @@ import Image from "@/components/Image";
 import images from "@/assets/images";
 
 import "./style.scss";
-
-const settings = [
-  {
-    label: "Hồ sơ cá nhân",
-    to: "/profile",
-  },
-  {
-    label: "Thẻ thành viên",
-    to: "/",
-  },
-  {
-    label: "Đăng xuất",
-    to: "/",
-  },
-];
-
-const languages = {
-  vi: { nativeName: "VN" },
-  en: { nativeName: "EN" },
-};
+import { MENU_LIST, SUB_MENU } from "./constants";
 
 const Navbar = () => {
-  const { i18n, t } = useTranslation();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [language, setLanguage] = React.useState(i18n.resolvedLanguage);
   const navigate = useNavigate();
-
-  const handleChangeLanguage = (event) => {
-    i18n.changeLanguage(event.target.value);
-    setLanguage(event.target.value);
-  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -80,6 +54,33 @@ const Navbar = () => {
     }
 
     setAnchorElUser(null);
+  };
+
+  //Render menu
+  const renderMenuTabletMobile = () => {
+    return MENU_LIST.map((item, index) => (
+      <MenuItem key={index} onClick={handleCloseNavMenu} className="main-header__navbar-item">
+        <Link to={item.to}>
+          <Typography className="main-header__navbar-item-name" textAlign="center">
+            {item.name}
+          </Typography>
+        </Link>
+      </MenuItem>
+    ));
+  };
+
+  const renderMenuPC = () => {
+    return MENU_LIST.map((item, index) => (
+      <Link key={index} to={item.to}>
+        <Button
+          className="main-header__navbar-item"
+          onClick={handleCloseNavMenu}
+          sx={{ my: 2, color: "white", display: "block" }}
+        >
+          {item.name}
+        </Button>
+      </Link>
+    ));
   };
 
   //Check if user is signed in
@@ -108,7 +109,7 @@ const Navbar = () => {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          {settings.map((setting, index) => (
+          {SUB_MENU.map((setting, index) => (
             <MenuItem key={index} component={Link} to={setting.to} onClick={handleCloseUserMenu}>
               <Typography textAlign="center">{setting.label}</Typography>
             </MenuItem>
@@ -169,27 +170,7 @@ const Navbar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              <MenuItem onClick={handleCloseNavMenu} className="main-header__navbar-item">
-                <Link to="/">
-                  <Typography className="main-header__navbar-item-name" textAlign="center">
-                    Trang chủ
-                  </Typography>
-                </Link>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu} className="main-header__navbar-item">
-                <Link to="/tin-tuc">
-                  <Typography className="main-header__navbar-item-name" textAlign="center">
-                    Tin tức
-                  </Typography>
-                </Link>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu} className="main-header__navbar-item">
-                <Link to="/lien-he">
-                  <Typography className="main-header__navbar-item-name" textAlign="center">
-                    Liên hệ
-                  </Typography>
-                </Link>
-              </MenuItem>
+              {renderMenuTabletMobile()}
             </Menu>
           </Box>
           <Typography
@@ -214,33 +195,7 @@ const Navbar = () => {
             className="main-header__navbar-list"
             sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
           >
-            <Link to="/">
-              <Button
-                className="main-header__navbar-item"
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                Trang chủ
-              </Button>
-            </Link>
-            <Link to="/tin-tuc">
-              <Button
-                className="main-header__navbar-item"
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                Tin tức
-              </Button>
-            </Link>
-            <Link to="/lien-he">
-              <Button
-                className="main-header__navbar-item"
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                Liên hệ
-              </Button>
-            </Link>
+            {renderMenuPC()}
           </Box>
 
           {/* Render action buttons if not sign in */}
@@ -250,26 +205,18 @@ const Navbar = () => {
             <>
               <Link to="/auth/login" className="main-header__navbar-btn-wrapper">
                 <Button className="main-header__navbar-btn">
-                  <span className="hide-on-mobile">{t("login")}</span>
+                  <span className="hide-on-mobile">Log in</span>
                   <FontAwesomeIcon className="btn__right-icon" icon={faSignIn} />
                 </Button>
               </Link>
               <Link to="/auth/register" className="main-header__navbar-btn-wrapper">
                 <Button className="main-header__navbar-btn">
-                  <span className="hide-on-mobile">Đăng ký</span>
+                  <span className="hide-on-mobile">Register</span>
                   <FontAwesomeIcon className="btn__right-icon" icon={faUser} />
                 </Button>
               </Link>
             </>
           )}
-
-          <Select className="language-switcher" value={language} onChange={handleChangeLanguage}>
-            {Object.keys(languages).map((language) => (
-              <MenuItem className="language-item" key={language} value={language}>
-                {languages[language].nativeName}
-              </MenuItem>
-            ))}
-          </Select>
         </Toolbar>
       </Container>
     </AppBar>
