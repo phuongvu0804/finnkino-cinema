@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -20,9 +20,11 @@ import actGetMovieList from "@/store/actions/movieList";
 import { MOVIE_OPTIONS } from "../constants";
 
 function MovieList() {
+  const [isActiveOption, setIsActiveOption] = useState(1);
+
   useEffect(() => {
     dispatch(actGetMovieList());
-  }, []);
+  }, [isActiveOption]);
 
   const dispatch = useDispatch();
   const movieList = useSelector((state) => state.movieList.data);
@@ -39,18 +41,26 @@ function MovieList() {
     }
   };
 
-  const renderMovieOptions = () => {
-    return MOVIE_OPTIONS.map((item, index) => (
-      <Button
-        key={index}
-        variant="text"
-        className={movieType === "now" ? "home-list__btn active" : "home-list__btn"}
-        onClick={() => dispatch({ type: SET_MOVIE_TYPE_NOW })}
-      >
-        {item}
-      </Button>
-    ));
+  const handleChooseMovieOption = (id) => {
+    setIsActiveOption(id);
+    dispatch({ type: SET_MOVIE_TYPE_NOW });
   };
+
+  const renderMovieOptions = () => {
+    return MOVIE_OPTIONS.map((item, index) => {
+      return (
+        <Button
+          key={index}
+          variant="text"
+          className={item.id === isActiveOption ? "home-list__btn active" : "home-list__btn"}
+          onClick={() => handleChooseMovieOption(item.id)}
+        >
+          {item.name}
+        </Button>
+      );
+    });
+  };
+
   return (
     <Box className="home__movie-list">
       <div className="home-list__btn-list">{renderMovieOptions()}</div>
