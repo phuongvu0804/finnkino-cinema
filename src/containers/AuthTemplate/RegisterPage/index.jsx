@@ -107,14 +107,14 @@ const RegisterPage = () => {
           {error}
         </Alert>
       )}
-      <Input name="fullName" control={control} label="Họ và tên" />
-      <Input name="username" control={control} label="Tài khoản" />
+      <Input name="fullName" control={control} label="Full Name" />
+      <Input name="username" control={control} label="Account" />
       <Input name="email" control={control} type="email" label="Email" />
-      <Input name="phoneNumber" control={control} label="Số điện thoại" />
+      <Input name="phoneNumber" control={control} label="Phone number" />
       <Input
         name="password"
         control={control}
-        label="Mật khẩu"
+        label="Password"
         type={showPassword ? "password" : "text"}
         InputProps={{
           endAdornment: (
@@ -129,7 +129,7 @@ const RegisterPage = () => {
       <Input
         name="confirmedPassword"
         control={control}
-        label="Xác nhận mật khẩu"
+        label="Confirm your password"
         type={showConfirmedPassword ? "password" : "text"}
         InputProps={{
           endAdornment: (
@@ -151,16 +151,16 @@ const RegisterPage = () => {
         className="accept-policies"
         label={
           <Box component="p">
-            Tôi chấp nhận <Link href="#">điều khoản và dịch vụ</Link> của Finnkino.
+            I accept <Link href="#">the terms and conditions</Link> of Finnkino.
           </Box>
         }
       />
       <Button onClick={() => setError("")} disabled={!checked} loading={loading}>
-        Đăng ký
+        Register
       </Button>
       <Stack direction="row" justifyContent="flex-end " alignItems="center">
         <Typography className="auth-link-to-login">
-          Đã có tài khoản? <RouterLink to="/auth/login">Đăng nhập</RouterLink>
+          Already have an account? <RouterLink to="/auth/login">Log In</RouterLink>
         </Typography>
       </Stack>
     </Box>

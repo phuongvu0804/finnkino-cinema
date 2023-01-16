@@ -97,18 +97,18 @@ const LoginPage = () => {
       />
       <FormControlLabel
         control={<Checkbox value="remember" color="primary" />}
-        label="Ghi nhớ đăng nhập"
+        label="Remember Me"
         className="remember-login"
       />
       <Button onClick={() => setError(false)} loading={loading}>
-        Đăng nhập
+        Log In
       </Button>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Link href="#" variant="body2" sx={{ fontSize: "13px" }}>
-          Quên mật khẩu?
+          Forgot your password?
         </Link>
         <Typography className="auth-link-to-register">
-          Không có tài khoản? <RouterLink to="/auth/register">Đăng ký</RouterLink>
+          Don't have an account? <RouterLink to="/auth/register">Register</RouterLink>
         </Typography>
       </Stack>
     </Box>
