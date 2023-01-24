@@ -235,7 +235,7 @@ function MovieModal(props) {
               </FormControl>
               <FormControl fullWidth className="form__input-wrapper">
                 <FormLabel className="movie-form__input-label" htmlFor="movie-desc">
-                  Mô tả
+                  Description
                 </FormLabel>
                 <TextField
                   name="moTa"

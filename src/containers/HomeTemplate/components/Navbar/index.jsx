@@ -1,6 +1,4 @@
-import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 //FontAwesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,11 +13,8 @@ import {
   Typography,
   Menu,
   Container,
-  Avatar,
   Button,
-  Tooltip,
   MenuItem,
-  Select,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -28,32 +23,26 @@ import Image from "@/components/Image";
 import images from "@/assets/images";
 
 import "./style.scss";
-import { MENU_LIST, SUB_MENU } from "./constants";
+import { MENU_LIST } from "./constants";
+import HeaderProfileBtn from "./components/HeaderProfileBtn";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const navigate = useNavigate();
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const USER = JSON.parse(localStorage.getItem("user"));
+    setUser(USER);
+  }, []);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
 
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = (e) => {
-    if (e.target.innerHTML === "Đăng xuất") {
-      localStorage.removeItem("user");
-      navigate("/");
-    }
-
-    setAnchorElUser(null);
   };
 
   //Render menu
@@ -84,38 +73,9 @@ const Navbar = () => {
   };
 
   //Check if user is signed in
-  const user = localStorage.getItem("user");
   const renderProfile = () => {
     return (
-      <Box sx={{ flexGrow: 0 }}>
-        <Tooltip title="Tài khoản cá nhân">
-          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-          </IconButton>
-        </Tooltip>
-        <Menu
-          sx={{ mt: "45px" }}
-          id="menu-appbar"
-          anchorEl={anchorElUser}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          open={Boolean(anchorElUser)}
-          onClose={handleCloseUserMenu}
-        >
-          {SUB_MENU.map((setting, index) => (
-            <MenuItem key={index} component={Link} to={setting.to} onClick={handleCloseUserMenu}>
-              <Typography textAlign="center">{setting.label}</Typography>
-            </MenuItem>
-          ))}
-        </Menu>
-      </Box>
+      <HeaderProfileBtn data={user} setAnchorElUser={setAnchorElUser} anchorElUser={anchorElUser} />
     );
   };
 

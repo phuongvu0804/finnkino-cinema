@@ -18,6 +18,7 @@ import "./style.scss";
 import { SET_MOVIE_TYPE_NOW, SET_MOVIE_TYPE_SOON } from "@/store/constants/movieList";
 import actGetMovieList from "@/store/actions/movieList";
 import { MOVIE_OPTIONS } from "../constants";
+import MovieOption from "./components/MovieOption";
 
 function MovieList() {
   const [isActiveOption, setIsActiveOption] = useState(1);
@@ -49,14 +50,12 @@ function MovieList() {
   const renderMovieOptions = () => {
     return MOVIE_OPTIONS.map((item, index) => {
       return (
-        <Button
+        <MovieOption
           key={index}
-          variant="text"
-          className={item.id === isActiveOption ? "home-list__btn active" : "home-list__btn"}
-          onClick={() => handleChooseMovieOption(item.id)}
-        >
-          {item.name}
-        </Button>
+          data={item}
+          onChooseMovieOption={handleChooseMovieOption}
+          isActiveOption={isActiveOption}
+        />
       );
     });
   };

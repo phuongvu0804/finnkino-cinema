@@ -16,7 +16,10 @@ import Image from "@/components/Image";
 import actFetchMovieDetails from "@/store/actions/movieDetails";
 import Loader from "@/components/Loader";
 
+//Others
 import "./style.scss";
+import { socialList } from "./constants";
+import SocialBtn from "./components/SocialBtn";
 
 function MovieDetailsPage() {
   const dispatch = useDispatch();
@@ -29,64 +32,10 @@ function MovieDetailsPage() {
     dispatch(actFetchMovieDetails(movieID.id));
   }, []);
 
-  const socialList = [
-    {
-      name: "Share",
-      icon: (
-        <FontAwesomeIcon
-          className="movie-detail__desc-btn movie-detail__desc-btn-icon"
-          icon={faFacebookF}
-        />
-      ),
-      className: "desc-btn--facebook",
-    },
-    {
-      name: "Tweet",
-      icon: (
-        <FontAwesomeIcon
-          className="movie-detail__desc-btn movie-detail__desc-btn-icon"
-          icon={faTwitter}
-        />
-      ),
-      className: "desc-btn--twitter",
-    },
-    {
-      name: "WhatsApp",
-      icon: (
-        <FontAwesomeIcon
-          className="movie-detail__desc-btn movie-detail__desc-btn-icon"
-          icon={faWhatsapp}
-        />
-      ),
-      className: "desc-btn--whatsapp",
-    },
-    {
-      name: "E-mail",
-      icon: (
-        <FontAwesomeIcon
-          className="movie-detail__desc-btn movie-detail__desc-btn-icon"
-          icon={faAt}
-        />
-      ),
-      className: "desc-btn--email",
-    },
-  ];
-
   const renderSocialBtn = () => {
-    return socialList.map((item, index) => (
-      <Button
-        key={index}
-        variant="contained"
-        size="small"
-        className={`btn-wrapper movie-detail__desc-btn ${item.className}`}
-        startIcon={item.icon}
-      >
-        <Typography sx={{ display: { xs: "none", lg: "block", xl: "block" } }}>
-          {item.name}
-        </Typography>
-      </Button>
-    ));
+    return socialList.map((item, index) => <SocialBtn key={index} data={item} />);
   };
+
   const renderLoader = () => {
     if (loading) return <Loader />;
   };
@@ -122,6 +71,7 @@ function MovieDetailsPage() {
                     className="btn-wrapper btn-outline top-info__btn"
                     startIcon={<FontAwesomeIcon icon={faPlay} />}
                     href={data.trailer}
+                    target="_blank"
                   >
                     Play Trailer
                   </Button>
@@ -171,12 +121,12 @@ function MovieDetailsPage() {
             </Typography>
             <Grid container spacing={2} className="movie-detail__content">
               <Grid item xs={12} md={7} className="movie-detail__syno">
-                <h4 className="movie-detail__content-title">Mô tả</h4>
+                <h4 className="movie-detail__content-title">Synopsis</h4>
                 <p>{data.moTa}</p>
               </Grid>
               <Grid item xs={12} md={5} className="movie-detail__details">
-                <h4 className="movie-detail__content-title">Chi tiết</h4>
-                <p>Ngày công chiếu: {moment(data.ngayKhoiChieu).format("D/M/YYYY hh:mm")}</p>
+                <h4 className="movie-detail__content-title">Details</h4>
+                <p>Release Date: {moment(data.ngayKhoiChieu).format("D/M/YYYY hh:mm")}</p>
               </Grid>
             </Grid>
           </Container>
