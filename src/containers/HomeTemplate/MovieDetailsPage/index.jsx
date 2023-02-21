@@ -36,15 +36,14 @@ function MovieDetailsPage() {
     return socialList.map((item, index) => <SocialBtn key={index} data={item} />);
   };
 
-  const renderLoader = () => {
-    if (loading) return <Loader />;
-  };
-
   return (
-    <>
-      {renderLoader()}
-      {data && (
-        <Box id="movie-detail-page">
+    <Box id="movie-detail-page">
+      {loading && !data ? (
+        <div className="loader-wrapper">
+          <Loader />
+        </div>
+      ) : (
+        <>
           <Box>
             <Box
               className="movie-detail__top-info"
@@ -52,25 +51,25 @@ function MovieDetailsPage() {
             >
               {/* Background */}
               <Box className="movie-detail__top-background">
-                <Image src={data.hinhAnh} />
+                <Image src={data?.hinhAnh} />
               </Box>
 
               <Container className="movie-detail__top-info-wrapper container">
                 <Box className="top-info__img">
-                  <Image src={data.hinhAnh} alt={data.tenPhim} />
+                  <Image src={data?.hinhAnh} alt={data?.tenPhim} />
                 </Box>
 
                 {/* Top info for PC screen */}
                 <Box className="top-info__content hide-on-mobile-tablet">
                   <Typography variant="h3" className="top-info__content-title" sx={{ mb: 2 }}>
-                    {data.tenPhim}
+                    {data?.tenPhim}
                   </Typography>
                   <Button
                     variant="outlined"
                     size="large"
                     className="btn-wrapper btn-outline top-info__btn"
                     startIcon={<FontAwesomeIcon icon={faPlay} />}
-                    href={data.trailer}
+                    href={data?.trailer}
                     target="_blank"
                   >
                     Play Trailer
@@ -81,7 +80,7 @@ function MovieDetailsPage() {
                     className="btn-wrapper btn-filled top-info__btn"
                     endIcon={<FontAwesomeIcon icon={faAnglesRight} />}
                   >
-                    <Link to={`/ticket-booking/${data.maPhim}`}>Tickets</Link>
+                    <Link to={`/ticket-booking/${data?.maPhim}`}>Tickets</Link>
                   </Button>
                 </Box>
 
@@ -102,9 +101,9 @@ function MovieDetailsPage() {
               <Box className="movie-detail__desc-left">
                 <p>
                   <FontAwesomeIcon className="movie-detail__desc-icon" icon={faHeart} />
-                  Rating: {data.danhGia}
+                  Rating: {data?.danhGia}
                 </p>
-                <p>{data.hot && "Hot"}</p>
+                <p>{data?.hot && "Hot"}</p>
               </Box>
               <Box className="movie-detail__desc-right">{renderSocialBtn()}</Box>
             </Box>
@@ -117,16 +116,16 @@ function MovieDetailsPage() {
               mb={2}
               variant="h3"
             >
-              {data.tenPhim}
+              {data?.tenPhim}
             </Typography>
             <Grid container spacing={2} className="movie-detail__content">
               <Grid item xs={12} md={7} className="movie-detail__syno">
                 <h4 className="movie-detail__content-title">Synopsis</h4>
-                <p>{data.moTa}</p>
+                <p>{data?.moTa}</p>
               </Grid>
               <Grid item xs={12} md={5} className="movie-detail__details">
                 <h4 className="movie-detail__content-title">Details</h4>
-                <p>Release Date: {moment(data.ngayKhoiChieu).format("D/M/YYYY hh:mm")}</p>
+                <p>Release Date: {moment(data?.ngayKhoiChieu).format("D/M/YYYY hh:mm")}</p>
               </Grid>
             </Grid>
           </Container>
@@ -136,15 +135,15 @@ function MovieDetailsPage() {
             <Box className="movie-detail__desc-left">
               <p>
                 <FontAwesomeIcon className="movie-detail__desc-icon" icon={faHeart} />
-                Rating: {data.danhGia}
+                Rating: {data?.danhGia}
               </p>
-              <p>{data.hot && "Hot"}</p>
+              <p>{data?.hot && "Hot"}</p>
             </Box>
             <Box className="movie-detail__desc-right">{renderSocialBtn()}</Box>
           </Box>
-        </Box>
+        </>
       )}
-    </>
+    </Box>
   );
 }
 

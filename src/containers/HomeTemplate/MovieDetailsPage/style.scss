@@ -1,3 +1,13 @@
+#movie-detail-page {
+  min-height: 500px;
+  .loader-wrapper {
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 .movie-detail__top-info {
   position: relative;
   padding-bottom: 50px;

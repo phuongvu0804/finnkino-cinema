@@ -19,32 +19,42 @@ import { SET_MOVIE_TYPE_NOW, SET_MOVIE_TYPE_SOON } from "@/store/constants/movie
 import actGetMovieList from "@/store/actions/movieList";
 import { MOVIE_OPTIONS } from "../constants";
 import MovieOption from "./components/MovieOption";
+import ShowAllBtn from "./components/ShowAllBtn";
 
 function MovieList() {
-  const [isActiveOption, setIsActiveOption] = useState(1);
-
-  useEffect(() => {
-    dispatch(actGetMovieList());
-  }, [isActiveOption]);
-
   const dispatch = useDispatch();
   const movieList = useSelector((state) => state.movieList.data);
   const loading = useSelector((state) => state.movieList.loading);
   const movieType = useSelector((state) => state.movieList.movieType);
 
-  let movieTypeList;
+  const [isActiveOption, setIsActiveOption] = useState(1);
+  const [moveListByType, setMoveListByType] = useState([]);
 
   const handleMovieType = () => {
     if (movieType === "now") {
-      return (movieTypeList = movieList?.filter((movie) => movie.dangChieu));
+      const data = movieList?.filter((movie) => movie.dangChieu);
+      setMoveListByType(data);
     } else if (movieType === "soon") {
-      return (movieTypeList = movieList?.filter((movie) => movie.sapChieu));
+      const data = movieList?.filter((movie) => movie.sapChieu);
+      setMoveListByType(data);
     }
   };
 
+  useEffect(() => {
+    dispatch(actGetMovieList());
+  }, [isActiveOption]);
+
+  useEffect(() => {
+    movieList && handleMovieType();
+  }, [movieList]);
+
   const handleChooseMovieOption = (id) => {
     setIsActiveOption(id);
-    dispatch({ type: SET_MOVIE_TYPE_NOW });
+    if (id === 1) {
+      dispatch({ type: SET_MOVIE_TYPE_NOW });
+    } else {
+      dispatch({ type: SET_MOVIE_TYPE_SOON });
+    }
   };
 
   const renderMovieOptions = () => {
@@ -67,35 +77,25 @@ function MovieList() {
       <Box className="movie-list__carousel-wrapper">
         <Container maxWidth="lg" sx={{ mx: "auto" }}>
           {loading ? (
-            <Loader />
+            <>
+              <Loader width="200px" />
+            </>
           ) : (
             <MultipleItems
               dots={false}
               autoplay={false}
               className="movie-list__carousel"
-              data={handleMovieType()}
+              data={moveListByType}
               Component="Image"
-              slidesToShow={8.2}
-              slidesToScroll={8}
+              slidesToShow={5}
+              slidesToScroll={5}
               nextArrow={<FontAwesomeIcon icon={faAngleRight} />}
               prevArrow={<FontAwesomeIcon icon={faAngleLeft} />}
             />
           )}
 
           <Container maxWidth="lg" sx={{ mx: "auto" }}>
-            <Link to="/">
-              <Button
-                variant="contained"
-                size="small"
-                className="btn-wrapper btn-filled movie-list__carousel-btn"
-              >
-                Show all
-                <FontAwesomeIcon
-                  icon={faAngleDoubleRight}
-                  className="movie-list__carousel-btn-icon"
-                />
-              </Button>
-            </Link>
+            <ShowAllBtn />
           </Container>
         </Container>
       </Box>

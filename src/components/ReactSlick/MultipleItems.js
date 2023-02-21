@@ -56,7 +56,7 @@ function MultipleItems({
   data,
   Component,
   dots = false,
-  speed = 2000,
+  speed = 1000,
   autoplaySpeed = 3000,
   slidesToShow = 3.2,
   slidesToScroll = 3.2,
